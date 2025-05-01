@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Price Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 0.95rem;
+            color: #bbb;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .dropdown-input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 10px;
+            background-color: #2c2c2c;
+            border: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .recommend-btn {
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4caf50;
+            background-color: transparent;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recommend-btn:hover {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .plot-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .plot-section img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            margin-top: 20px;
+            width: 100%;
+            color: #ccc;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            color: #eee;
+        }
+
+        caption {
+            caption-side: top;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Price Predictor</h1>
+
+        <form method="POST" class="search-section">
+            <label for="symbol">Enter Stock Symbol:</label>
+            <input type="text" id="symbol" name="symbol" class="dropdown-input" placeholder="e.g. AAPL, TSLA, MSFT" required value="{{ symbol or '' }}">
+            <button type="submit" class="recommend-btn">Predict</button>
+        </form>
+
+        {% if data %}
+        <div class="plot-section">
+            <h2>Moving Averages</h2>
+            <img src="data:image/png;base64,{{ plots['ma50'] }}" alt="MA50 Plot">
+            <img src="data:image/png;base64,{{ plots['ma100'] }}" alt="MA100 Plot">
+            <img src="data:image/png;base64,{{ plots['ma200'] }}" alt="MA200 Plot">
+
+            <h2>Actual vs Predicted Price</h2>
+            <img src="data:image/png;base64,{{ plots['prediction'] }}" alt="Prediction Plot">
+        </div>
+
+        <div class="plot-section">
+            <h2>Recent Data</h2>
+            {{ data|safe }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
